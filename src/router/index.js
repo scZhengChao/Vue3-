@@ -22,8 +22,18 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/grid.vue')
-  }
+    component: () => import(/* webpackChunkName: "grid" */ '../views/grid.vue')
+  },
+  {
+      path:'/comp',
+      name:'component',
+      component:()=>import(/* webpackChunkName: "comp" */'../views/component.vue')
+  },
+  {
+    path:'/transition',
+    name:'动画',
+    component:()=>import(/* webpackChunkName: "comp" */'../views/moving.vue')
+}
 ]
 
 const router = createRouter({

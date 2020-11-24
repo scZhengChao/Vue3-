@@ -14,6 +14,7 @@
     </ul>
     <p v-highlight="'yellow'">{{ $filters.currencyUSD(accountBalance) }}</p>
     <input type="checkbox" v-model="toggle" true-value="yes" false-value="no" />checkbox
+
 </div>
 </template>
 
@@ -32,7 +33,7 @@ export default {
         itemRefs:[],
         accountBalance:'000',
         attribute:0,
-        toggle:null
+        toggle:null,
     }},
     methods: {
         setItemRef(el) {
@@ -54,13 +55,15 @@ export default {
     },
     created() {
        
-        setTimeout(()=>{
-            this.increment()
-        },2000)
+        // setTimeout(()=>{
+        //     this.increment()
+        // },2000)
     },
     setup(props,ctx) {
+        console.log(ctx)
         const count = ref(0)
         const double = computed(() => count.value * 2)
+        console.log(double.value,'double+++')
         const  { proxy, data } = getCurrentInstance()
         function increment() {
             count.value++
@@ -72,19 +75,35 @@ export default {
         // 等效于
         // const foo = isRef(props.foo) ? props.foo.value : props.foo
         
-        watchEffect(() => {
+        watchEffect( onInvalidate => {
             // console.log(proxy.accountBalance) // foo变化会有输出
             // console.log(data.accountBalance) // foo变化会有输出
-            console.log(state.foo)
-            console.log(proxy.toggle)
+            console.log(count.value,'watcheffect+++====')
+            console.log(state.foo,'watcheffect+++====')
+            onInvalidate(() => {
+                console.log('onInvalidate========')
+            })
+        },{
+            flush:'post',//sync pre
+            onTrigger(e) {
+                // debugger
+            },
+            onTrack(){
+
+            }
         })
+        // setTimeout(()=>{
+            // count.value ++
+        // },2000)
         watch(_=>proxy.toggle,(newValue,oldValue)=>{
             console.log(newValue,oldValue)
         })
-        state.foo = 'foooooo' // 输出 'foooooo'
+        // state.foo = 'foo' // 输出 'foooooo'
         onMounted(() =>{
+            count.value ++
             proxy.accountBalance = '8888'
             state.foo ='mounted'
+            console.log('onMounted')
         })
         return {
             count,
@@ -97,7 +116,7 @@ export default {
         }
     },
     mounted() {
-       
+        console.log('Mounted')
     },
 }
 </script>

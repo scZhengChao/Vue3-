@@ -1,15 +1,25 @@
 <template>
   <div id="nav">
     <router-link to="/" >Home</router-link> |
-    <router-link to="/grid" >grid</router-link> 
+    <router-link to="/grid" >grid</router-link> |
+    <router-link to="/comp" >组件</router-link> |
+    <router-link to="/transition" >动画</router-link> 
   </div>
-  <router-view/>
+  <router-view @click.native='emit' class="view"/>
 </template>
 
 <script>
-    export default{
+export default{
+    name:'app',
+    data(){return{
         
-    }
+    }},
+    methods: {
+        emit(data){
+            console.log(data)
+        }
+    },
+}
 </script>
 <style lang="scss">
 #app {
@@ -30,5 +40,8 @@
       color: #42b983;
     }
   }
+}
+.view{
+
 }
 </style>
